@@ -1,10 +1,9 @@
 # netcore2-reverse-proxy
-This is a .NET Core 2 sample project showing how to implement a custom reverse proxy, as described in the article [Building a Reverse Proxy in .NET Core](https://auth0.com/blog/building-a-reverse-proxy-in-dot-net-core/).
+This is a .NET Core 2.2 sample project showing how to implement a custom reverse proxy, as described in the article [Building a Reverse Proxy in .NET Core](https://auth0.com/blog/building-a-reverse-proxy-in-dot-net-core/).
 
+# Credit
+Based on the work completed at https://github.com/andychiare/netcore2-reverse-proxy by Andy Chiare
+ 
+# Changes from original source
 
-## Running the project ##
-
-You can run the Web application from Visual Studio or by typing `dotnet run` in a command window.
-
-When the application is running, you can point your browser to `localhost:5001` and access a Google form without leaving the `localhost` domain.
-
+This can now be hosted as a windows service, and reverse proxy between the outside world and IIS, ideal if you are running a small hosting server yourself on Windows 10 Home edition.

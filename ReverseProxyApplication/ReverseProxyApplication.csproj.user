@@ -5,5 +5,11 @@
   </PropertyGroup>
   <PropertyGroup>
     <ActiveDebugProfile>ReverseProxyApplication</ActiveDebugProfile>
+    <NameOfLastUsedPublishProfile>FolderProfile</NameOfLastUsedPublishProfile>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="Classes\ServiceHost.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>
