@@ -54,18 +54,6 @@ namespace ReverseProxyApplication
             await context.Response.Body.WriteAsync(content);
         }
 
-        private bool IsContentOfType(HttpResponseMessage responseMessage, string type)
-        {
-            var result = false;
-
-            if (responseMessage.Content?.Headers?.ContentType != null)
-            {
-                result = responseMessage.Content.Headers.ContentType.MediaType == type;
-            }
-
-            return result;
-        }
-
         private HttpRequestMessage CreateTargetMessage(HttpContext context, Uri targetUri)
         {
             var requestMessage = new HttpRequestMessage();
