@@ -62,7 +62,20 @@ namespace ReverseProxyApplication
             requestMessage.RequestUri = targetUri;
             requestMessage.Headers.Host = targetUri.Host;
             requestMessage.Method = new HttpMethod(context.Request.Method);
-           
+
+            string ip4Address;
+
+            if (context.Connection.RemoteIpAddress.IsIPv4MappedToIPv6)
+                ip4Address = context.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            else
+                ip4Address = context.Connection.RemoteIpAddress.ToString();
+
+            requestMessage.Headers.Add("HTTP_X_REAL_IP", ip4Address);
+            requestMessage.Headers.Add("HTTP_X_FORWARDED_FOR", ip4Address);
+            requestMessage.Headers.Add("X-Forwarded-For", ip4Address);
+            requestMessage.Headers.Add("X-Forwarded-Proto", context.Request.Scheme);
+            requestMessage.Headers.Add("X-Forwarded-Host", context.Request.Host.ToString());
+            
             return requestMessage;
         }
 
@@ -78,9 +91,10 @@ namespace ReverseProxyApplication
                 requestMessage.Content = new StreamContent(context.Request.Body);
             }
 
-            foreach (var header in context.Request.Headers)
+            foreach (string key in context.Request.Headers.Keys)
             {
-                requestMessage.Content?.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
+                requestMessage.Headers.Add(key, context.Request.Headers[key].ToString());
+                //requestMessage.Content?.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
             }
         }
 
