@@ -41,8 +41,7 @@ namespace ReverseProxyApplication
             }
             catch (Exception err)
             {
-                string s = err.Message;
-                throw;
+                Shared.EventLog.Add(err);
             }
 
             await _nextMiddleware(context);
@@ -91,10 +90,19 @@ namespace ReverseProxyApplication
                 requestMessage.Content = new StreamContent(context.Request.Body);
             }
 
-            foreach (string key in context.Request.Headers.Keys)
+            if (requestMessage.Content != null)
             {
-                requestMessage.Headers.Add(key, context.Request.Headers[key].ToString());
-                //requestMessage.Content?.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
+                foreach (var header in context.Request.Headers)
+                {
+                    requestMessage.Content?.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
+                }
+            }
+            else
+            {
+                foreach (string key in context.Request.Headers.Keys)
+                {
+                    requestMessage.Headers.TryAddWithoutValidation(key, context.Request.Headers[key].ToString());
+                }
             }
         }
 

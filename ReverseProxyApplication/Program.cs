@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -12,10 +13,15 @@ namespace ReverseProxyApplication
         public static void Main(string[] args)
         {
             var isService = !(Debugger.IsAttached || args.Contains("--console"));
+            var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
+
+            
+            string exePath = Path.GetTempPath();
+
+            Shared.EventLog.Initialise(7, Path.Combine(exePath, "Logs"), Path.Combine(exePath, "Errors"));
 
             if (isService)
             {
-                var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
                 var pathToContentRoot = Path.GetDirectoryName(pathToExe);
                 Directory.SetCurrentDirectory(pathToContentRoot);
             }
